@@ -1,5 +1,4 @@
-const socket = io(); // Connect to the server
-
+const socket = io('http://192.168.0.106:3000');
 // Initialize the map
 const map = L.map('map').setView([12.8797, 121.7740], 6); // Centered on the Philippines
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
