@@ -1,9 +1,10 @@
-const socket = io('http://192.168.0.106:3000');// Connect to the server
+const socket = io('http://192.168.0.106:3000'); // Connect to the server (ensure the backend server is running)
 
 // Initialize the map
 const map = L.map('map').setView([12.8797, 121.7740], 6); // Centered on the Philippines
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
+    attribution: '© OpenStreetMap contributors',
 }).addTo(map);
 
 // Markers for the user and admin
@@ -59,10 +60,15 @@ if (navigator.geolocation) {
             updateUserMarker(latitude, longitude);
 
             // Send location to the server when the button is clicked
-            document.getElementById('send-location').addEventListener('click', () => {
-                socket.emit('sendLocation', { lat: latitude, lng: longitude });
-                showNotification('Location sent to admin!');
-            });
+            const sendLocationButton = document.getElementById('send-location');
+            if (sendLocationButton) {
+                sendLocationButton.addEventListener('click', () => {
+                    socket.emit('sendLocation', { lat: latitude, lng: longitude });
+                    showNotification('Location sent to admin!');
+                });
+            } else {
+                console.error('Button with ID "send-location" not found in the HTML.');
+            }
         },
         (error) => {
             console.error('Error getting location:', error);
